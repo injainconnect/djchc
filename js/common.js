@@ -12,11 +12,16 @@ document.addEventListener("DOMContentLoaded", function () {
             { href: "contact.html", icon: "fa-envelope", label: "Contact Us" }
         ];
         nav.innerHTML = `
-            <div class="logo">🙏 Digambar Jain Temples of Hyderabad </div>
+            <div class="logo">🙏 DJCHC</div>
+            <button class="menu-toggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
             <ul>
                 ${links.map(l => `<li><a href="${l.href}" class="${currentPage === l.href ? 'active' : ''}"><i class="fas ${l.icon}"></i> ${l.label}</a></li>`).join("")}
             </ul>
         `;
+        // Hamburger toggle
+        nav.querySelector(".menu-toggle").addEventListener("click", function () {
+            nav.querySelector("ul").classList.toggle("open");
+        });
     }
 
     // Footer

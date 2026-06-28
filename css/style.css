@@ -8,6 +8,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -18,6 +19,15 @@ nav .logo {
     font-weight: bold;
     font-size: 1.2rem;
     padding: 15px 0;
+}
+nav .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #daa520;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 10px;
 }
 nav ul {
     list-style: none;
@@ -54,6 +64,7 @@ nav ul li a.active {
 .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
 section { margin-bottom: 40px; }
 section h2 { color: #b8860b; margin-bottom: 15px; border-bottom: 2px solid #daa520; padding-bottom: 5px; }
+section ul { padding-left: 20px; }
 .highlight {
     background: #fff8e1;
     border-left: 4px solid #daa520;
@@ -79,10 +90,6 @@ section h2 { color: #b8860b; margin-bottom: 15px; border-bottom: 2px solid #daa5
     gap: 20px;
 }
 .contact-grid .card i { color: #daa520; margin-right: 8px; }
-@media (max-width: 600px) {
-    .contact-grid { grid-template-columns: 1fr; }
-    nav ul li a { padding: 15px 12px; font-size: 0.9rem; }
-}
 
 /* Footer */
 footer {
@@ -91,4 +98,26 @@ footer {
     text-align: center;
     padding: 20px;
     margin-top: 40px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    nav .menu-toggle { display: block; }
+    nav ul {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        padding: 10px 0;
+    }
+    nav ul.open { display: flex; }
+    nav ul li a {
+        padding: 12px 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .banner h1 { font-size: 1.5rem; }
+    .banner p { font-size: 1rem; }
+    .banner { padding: 40px 15px; }
+    .container { padding: 25px 15px; }
+    .contact-grid { grid-template-columns: 1fr; }
+    iframe { height: 250px; }
 }
