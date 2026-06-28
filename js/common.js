@@ -8,11 +8,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const links = [
             { href: "index.html", icon: "fa-home", label: "Home" },
             { href: "news.html", icon: "fa-newspaper", label: "News" },
+            { href: "events.html", icon: "fa-calendar-alt", label: "Events" },
             { href: "library.html", icon: "fa-book", label: "Library" },
             { href: "chaturmas.html", icon: "fa-calendar-check", label: "Chaturmas 2026" },
             { href: "mahila-mandal.html", icon: "fa-female", label: "Mahila Mandal" },
             { href: "pathshala.html", icon: "fa-chalkboard-teacher", label: "Pathshala" },
-            { href: "about.html", icon: "fa-info-circle", label: "About Us" },
             { href: "contact.html", icon: "fa-envelope", label: "Contact Us" }
         ];
         nav.innerHTML = `
