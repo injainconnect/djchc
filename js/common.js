@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
             { href: "index.html", icon: "fa-home", label: "Home" },
             { href: "news.html", icon: "fa-newspaper", label: "News" },
             { href: "library.html", icon: "fa-book", label: "Library" },
+            { href: "chaturmas.html", icon: "fa-calendar-check", label: "Chaturmas 2026" },
             { href: "about.html", icon: "fa-info-circle", label: "About Us" },
             { href: "contact.html", icon: "fa-envelope", label: "Contact Us" }
         ];
