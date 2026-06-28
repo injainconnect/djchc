@@ -1,0 +1,94 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Georgia', serif; color: #333; line-height: 1.6; }
+
+/* Navigation */
+nav {
+    background: #1a1a2e;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+nav .logo {
+    color: #daa520;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 15px 0;
+}
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 5px;
+}
+nav ul li a {
+    color: #eee;
+    text-decoration: none;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s, color 0.3s;
+    border-radius: 4px;
+}
+nav ul li a:hover,
+nav ul li a.active {
+    background: #daa520;
+    color: #1a1a2e;
+}
+
+/* Header Banner */
+.banner {
+    background: linear-gradient(135deg, #b8860b, #daa520);
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+.banner h1 { font-size: 2.5rem; margin-bottom: 10px; }
+.banner p { font-size: 1.2rem; opacity: 0.9; }
+
+/* Content */
+.container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+section { margin-bottom: 40px; }
+section h2 { color: #b8860b; margin-bottom: 15px; border-bottom: 2px solid #daa520; padding-bottom: 5px; }
+.highlight {
+    background: #fff8e1;
+    border-left: 4px solid #daa520;
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+.card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.card h3 { color: #b8860b; margin-bottom: 8px; }
+.card .date { font-size: 0.85rem; color: #888; margin-bottom: 10px; }
+
+/* Contact */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.contact-grid .card i { color: #daa520; margin-right: 8px; }
+@media (max-width: 600px) {
+    .contact-grid { grid-template-columns: 1fr; }
+    nav ul li a { padding: 15px 12px; font-size: 0.9rem; }
+}
+
+/* Footer */
+footer {
+    background: #1a1a2e;
+    color: #ccc;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
