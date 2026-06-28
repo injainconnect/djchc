@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const links = [
             { href: "index.html", icon: "fa-home", label: "Home" },
             { href: "news.html", icon: "fa-newspaper", label: "News" },
+            { href: "library.html", icon: "fa-book", label: "Library" },
             { href: "about.html", icon: "fa-info-circle", label: "About Us" },
             { href: "contact.html", icon: "fa-envelope", label: "Contact Us" }
         ];

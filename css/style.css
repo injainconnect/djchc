@@ -91,6 +91,15 @@ section ul { padding-left: 20px; }
 }
 .contact-grid .card i { color: #daa520; margin-right: 8px; }
 
+/* Library */
+.book-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.book-grid .card h3 i { color: #daa520; margin-right: 6px; }
+.book-grid .card .author { font-size: 0.85rem; color: #666; font-style: italic; margin-bottom: 8px; }
+
 /* Footer */
 footer {
     background: #1a1a2e;
@@ -119,5 +128,6 @@ footer {
     .banner { padding: 40px 15px; }
     .container { padding: 25px 15px; }
     .contact-grid { grid-template-columns: 1fr; }
+    .book-grid { grid-template-columns: 1fr; }
     iframe { height: 250px; }
 }
