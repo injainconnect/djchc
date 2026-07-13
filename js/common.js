@@ -61,10 +61,10 @@ document.addEventListener("DOMContentLoaded", function () {
         footer.innerHTML = `
             <p>&copy; 2026 DJCHC - Digambar Jain Centre of Hi-Tec City, Hyderabad</p>
             <p style="font-size:0.85rem; margin-top:8px;">
-                <a href="index.html" style="color:#daa520; text-decoration:none;">Home</a> |
-                <a href="news.html" style="color:#daa520; text-decoration:none;">News</a> |
-                <a href="about.html" style="color:#daa520; text-decoration:none;">About Us</a> |
-                <a href="contact.html" style="color:#daa520; text-decoration:none;">Contact Us</a>
+                <a href="index.html" style="color:var(--color-accent); text-decoration:none;">Home</a> |
+                <a href="news.html" style="color:var(--color-accent); text-decoration:none;">News</a> |
+                <a href="about.html" style="color:var(--color-accent); text-decoration:none;">About Us</a> |
+                <a href="contact.html" style="color:var(--color-accent); text-decoration:none;">Contact Us</a>
             </p>
         `;
     }

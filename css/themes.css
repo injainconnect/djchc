@@ -1,0 +1,370 @@
+/* ==================================================================
+   DJCHC — Theme & Layout system
+   ------------------------------------------------------------------
+   Each theme overrides the custom properties declared in style.css by
+   setting them on  html[data-theme="..."].  Layouts adjust structural
+   properties on  html[data-layout="..."].  The two are independent, so
+   any theme combines with any layout.  js/theme.js wires the picker UI
+   and persists the choice in localStorage.
+
+   Design intent: a calm, elegant "hi-tech spiritual centre" — modern
+   and sleek, but reverent and universally welcoming. No loud gimmicks.
+================================================================== */
+
+/* smooth, respectful cross-fade when switching */
+html { transition: background 0.45s ease; }
+
+/* ------------------------------------------------------------------
+   THEME 1 — Heritage Gold  (default; matches original site)
+------------------------------------------------------------------ */
+html[data-theme="heritage"] {
+    --color-bg: #ffffff;
+    --color-text: #333333;
+    --color-muted: #888888;
+    --color-heading: #b8860b;
+    --color-accent: #daa520;
+    --color-accent-dark: #b8860b;
+    --color-accent-contrast: #1a1a2e;
+    --color-nav-bg: #1a1a2e;
+    --color-nav-link: #eeeeee;
+    --color-card-bg: #ffffff;
+    --color-card-border: #eeeeee;
+    --color-highlight-bg: #fff8e1;
+    --color-footer-bg: #1a1a2e;
+    --color-footer-text: #cccccc;
+    --banner-gradient: linear-gradient(135deg, #b8860b, #daa520);
+    --banner-text: #ffffff;
+}
+
+/* ------------------------------------------------------------------
+   THEME 2 — Lotus Dawn  (soft saffron + ivory, serene & warm)
+------------------------------------------------------------------ */
+html[data-theme="lotus"] {
+    --color-bg: #fffaf3;
+    --color-text: #4a3f35;
+    --color-muted: #9c8f80;
+    --color-heading: #d2691e;
+    --color-accent: #f4a259;
+    --color-accent-dark: #d2691e;
+    --color-accent-contrast: #ffffff;
+    --color-nav-bg: #7a4419;
+    --color-nav-link: #fdf0e3;
+    --color-card-bg: #ffffff;
+    --color-card-border: #f0e2d2;
+    --color-highlight-bg: #fdeede;
+    --color-footer-bg: #7a4419;
+    --color-footer-text: #f5e4d3;
+    --banner-gradient: linear-gradient(135deg, #f4a259 0%, #f6bd60 50%, #f7ede2 100%);
+    --banner-text: #5a3210;
+}
+
+/* ------------------------------------------------------------------
+   THEME 3 — Midnight Sapphire  (elegant dark mode)
+------------------------------------------------------------------ */
+html[data-theme="midnight"] {
+    --color-bg: #0f1220;
+    --color-text: #d7dbe8;
+    --color-muted: #8b90a8;
+    --color-heading: #e0b64d;
+    --color-accent: #f0c85a;
+    --color-accent-dark: #d8ad3f;
+    --color-accent-contrast: #0f1220;
+    --color-nav-bg: #161a2e;
+    --color-nav-link: #e8ebf5;
+    --color-card-bg: #1a1f36;
+    --color-card-border: #2a3050;
+    --color-highlight-bg: #1f2543;
+    --color-footer-bg: #0b0e18;
+    --color-footer-text: #aab0c8;
+    --banner-gradient: linear-gradient(135deg, #1f2748 0%, #2b1d52 55%, #b8860b 140%);
+    --banner-text: #f5e9c8;
+}
+/* soften shadows on dark surfaces */
+html[data-theme="midnight"] .card,
+html[data-theme="midnight"] .event-card { box-shadow: 0 2px 14px rgba(0,0,0,0.45); }
+html[data-theme="midnight"] .book-grid .card .author,
+html[data-theme="midnight"] .events-intro,
+html[data-theme="midnight"] .event-meta { color: #9aa0ba; }
+
+/* ------------------------------------------------------------------
+   THEME 4 — Emerald Serenity  (nature green, ahimsa / peace)
+------------------------------------------------------------------ */
+html[data-theme="emerald"] {
+    --color-bg: #f5fbf7;
+    --color-text: #29352e;
+    --color-muted: #7d8f84;
+    --color-heading: #1e7a5a;
+    --color-accent: #2ea179;
+    --color-accent-dark: #1e7a5a;
+    --color-accent-contrast: #ffffff;
+    --color-nav-bg: #10352a;
+    --color-nav-link: #e6f4ec;
+    --color-card-bg: #ffffff;
+    --color-card-border: #dbeee3;
+    --color-highlight-bg: #e6f6ee;
+    --color-footer-bg: #10352a;
+    --color-footer-text: #d3e9dd;
+    --banner-gradient: linear-gradient(135deg, #1e7a5a 0%, #2ea179 60%, #7ac6a4 120%);
+    --banner-text: #ffffff;
+}
+
+/* ------------------------------------------------------------------
+   THEME 5 — Royal Maroon  (deep traditional crimson + gold)
+------------------------------------------------------------------ */
+html[data-theme="maroon"] {
+    --color-bg: #fdf7f5;
+    --color-text: #3a2320;
+    --color-muted: #9b7d78;
+    --color-heading: #8e2436;
+    --color-accent: #c0392b;
+    --color-accent-dark: #8e2436;
+    --color-accent-contrast: #ffffff;
+    --color-nav-bg: #4a121c;
+    --color-nav-link: #f7e4e4;
+    --color-card-bg: #ffffff;
+    --color-card-border: #f0dcd8;
+    --color-highlight-bg: #fbeae7;
+    --color-footer-bg: #4a121c;
+    --color-footer-text: #f3d9d9;
+    --banner-gradient: linear-gradient(135deg, #8e2436 0%, #c0392b 55%, #e0a53f 130%);
+    --banner-text: #fff4e6;
+}
+
+/* ------------------------------------------------------------------
+   THEME 6 — Hi-Tech Aurora  (modern indigo→teal, subtle tech glow)
+------------------------------------------------------------------ */
+html[data-theme="aurora"] {
+    --color-bg: #f4f7fb;
+    --color-text: #263143;
+    --color-muted: #7e8aa0;
+    --color-heading: #4338ca;
+    --color-accent: #06b6d4;
+    --color-accent-dark: #4338ca;
+    --color-accent-contrast: #ffffff;
+    --color-nav-bg: #141a2e;
+    --color-nav-link: #e7ecf6;
+    --color-card-bg: #ffffff;
+    --color-card-border: #e2e8f2;
+    --color-highlight-bg: #eaf4fb;
+    --color-footer-bg: #141a2e;
+    --color-footer-text: #c7d0e2;
+    --banner-gradient: linear-gradient(120deg, #4338ca 0%, #6d28d9 40%, #06b6d4 100%);
+    --banner-text: #ffffff;
+}
+
+/* ==================================================================
+   LAYOUTS
+================================================================== */
+
+/* LAYOUT: Classic (default) — nothing to override, uses style.css base */
+
+/* LAYOUT: Wide — roomy, immersive reading width */
+html[data-layout="wide"] { --container-max: 1180px; }
+html[data-layout="wide"] .banner { padding: 80px 20px; }
+
+/* LAYOUT: Comfort — larger type & generous spacing (accessibility-friendly) */
+html[data-layout="comfort"] {
+    --container-max: 820px;
+    --section-gap: 56px;
+    font-size: 18px;
+    line-height: 1.8;
+}
+html[data-layout="comfort"] .banner { padding: 72px 20px; }
+html[data-layout="comfort"] .card,
+html[data-layout="comfort"] .highlight { padding: 28px; }
+
+/* LAYOUT: Focus — content on a soft "sheet" that floats over the page bg */
+html[data-layout="focus"] { --container-max: 860px; }
+html[data-layout="focus"] .container {
+    background: var(--color-card-bg);
+    margin: 32px auto;
+    border-radius: 18px;
+    padding: 44px 48px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.10);
+}
+html[data-layout="focus"][data-theme="midnight"] .container { box-shadow: 0 12px 44px rgba(0,0,0,0.55); }
+@media (max-width: 768px) {
+    html[data-layout="focus"] .container { margin: 16px 10px; padding: 26px 20px; }
+}
+
+/* ==================================================================
+   FLOATING CUSTOMISER  (built by js/theme.js)
+================================================================== */
+.tc-fab {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 1000;
+    width: 56px;
+    height: 56px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--banner-text, #fff);
+    background: var(--banner-gradient, linear-gradient(135deg, #b8860b, #daa520));
+    box-shadow: 0 6px 20px rgba(0,0,0,0.28);
+    font-size: 1.35rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.tc-fab:hover { transform: rotate(35deg) scale(1.08); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+.tc-fab:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 3px; }
+
+/* dim backdrop */
+.tc-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(10,12,24,0.45);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.tc-overlay.tc-show { opacity: 1; pointer-events: auto; }
+
+/* slide-in panel */
+.tc-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1001;
+    height: 100%;
+    width: 340px;
+    max-width: 88vw;
+    background: var(--color-card-bg, #fff);
+    color: var(--color-text, #333);
+    box-shadow: -8px 0 40px rgba(0,0,0,0.3);
+    transform: translateX(105%);
+    transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex;
+    flex-direction: column;
+    font-family: var(--body-font);
+}
+.tc-panel.tc-open { transform: translateX(0); }
+
+.tc-header {
+    background: var(--banner-gradient);
+    color: var(--banner-text);
+    padding: 22px 22px 20px;
+}
+.tc-header h3 { margin: 0; font-size: 1.25rem; font-family: var(--heading-font); }
+.tc-header p { margin: 4px 0 0; font-size: 0.82rem; opacity: 0.9; }
+.tc-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255,255,255,0.18);
+    color: inherit;
+    border: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    transition: background 0.2s;
+}
+.tc-close:hover { background: rgba(255,255,255,0.35); }
+
+.tc-body { padding: 20px 22px 28px; overflow-y: auto; flex: 1; }
+.tc-section-label {
+    font-size: 0.72rem;
+    font-weight: bold;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 4px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.tc-section-label:not(:first-child) { margin-top: 26px; }
+.tc-section-label i { color: var(--color-accent); }
+
+/* theme swatches */
+.tc-themes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+.tc-theme {
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 8px;
+    cursor: pointer;
+    background: rgba(127,127,127,0.06);
+    text-align: center;
+    transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+.tc-theme:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+.tc-theme.tc-active { border-color: var(--color-accent); }
+.tc-theme .tc-swatch {
+    height: 44px;
+    border-radius: 8px;
+    margin-bottom: 7px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+}
+.tc-theme .tc-swatch span {
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.7);
+}
+.tc-theme .tc-name { font-size: 0.8rem; font-weight: bold; }
+.tc-theme.tc-active .tc-name::after {
+    content: " \2713";
+    color: var(--color-accent-dark);
+}
+
+/* layout options */
+.tc-layouts { display: flex; flex-direction: column; gap: 8px; }
+.tc-layout {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid var(--color-card-border);
+    border-radius: 10px;
+    padding: 11px 14px;
+    cursor: pointer;
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-align: left;
+    transition: border-color 0.2s, background 0.2s;
+}
+.tc-layout:hover { border-color: var(--color-accent); }
+.tc-layout.tc-active {
+    border-color: var(--color-accent);
+    background: var(--color-highlight-bg);
+}
+.tc-layout i { color: var(--color-accent); width: 20px; text-align: center; font-size: 1.05rem; }
+.tc-layout .tc-l-name { font-weight: bold; }
+.tc-layout .tc-l-desc { display: block; font-size: 0.75rem; color: var(--color-muted); font-weight: normal; }
+
+.tc-reset {
+    margin-top: 24px;
+    width: 100%;
+    padding: 11px;
+    border: 1px solid var(--color-card-border);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--color-muted);
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+}
+.tc-reset:hover { color: var(--color-accent-dark); border-color: var(--color-accent); }
+
+@media (prefers-reduced-motion: reduce) {
+    html, body, nav, .banner, .card, .tc-panel, .tc-overlay, .tc-fab { transition: none !important; }
+}
