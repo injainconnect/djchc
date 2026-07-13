@@ -29,7 +29,7 @@ Every page has empty placeholders:
 <script src="js/common.js"></script>
 ```
 
-`js/common.js` injects the nav and footer at `DOMContentLoaded`, and sets the `active` class on the nav link matching `location.pathname`. **When you add a new page, you must also add its entry to the `links` array in `js/common.js`** — the HTML file alone will not surface in the nav.
+`js/common.js` injects the nav and footer at `DOMContentLoaded`, and sets the `active` class on the nav link matching `location.pathname`. **When you add a new page, you must also add its entry to the appropriate array in `js/common.js`** — either the main `links` array or the `initiatives` array for the "Important Initiatives" dropdown. The HTML file alone will not surface in the nav.
 
 ### Page skeleton
 

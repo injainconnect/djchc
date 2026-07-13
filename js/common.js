@@ -11,21 +11,48 @@ document.addEventListener("DOMContentLoaded", function () {
             { href: "events.html", icon: "fa-calendar-alt", label: "Events" },
             { href: "library.html", icon: "fa-book", label: "Library" },
             { href: "chaturmas.html", icon: "fa-calendar-check", label: "Chaturmas 2026" },
-            { href: "mahila-mandal.html", icon: "fa-female", label: "Mahila Mandal" },
-            { href: "pathshala.html", icon: "fa-chalkboard-teacher", label: "Pathshala" },
             { href: "contact.html", icon: "fa-envelope", label: "Contact Us" }
         ];
+        
+        const initiatives = [
+            { href: "mahila-mandal.html", icon: "fa-female", label: "Mahila Mandal" },
+            { href: "pathshala.html", icon: "fa-chalkboard-teacher", label: "Pathshala" }
+        ];
+        
         nav.innerHTML = `
             <div class="logo">🙏 Digambar Jain Temples of Hyderabad</div>
             <button class="menu-toggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
             <ul>
                 ${links.map(l => `<li><a href="${l.href}" class="${currentPage === l.href ? 'active' : ''}"><i class="fas ${l.icon}"></i> ${l.label}</a></li>`).join("")}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle"><i class="fas fa-star"></i> Important Initiatives <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        ${initiatives.map(i => `<li><a href="${i.href}" class="${currentPage === i.href ? 'active' : ''}"><i class="fas ${i.icon}"></i> ${i.label}</a></li>`).join("")}
+                    </ul>
+                </li>
             </ul>
         `;
         // Hamburger toggle
         nav.querySelector(".menu-toggle").addEventListener("click", function () {
             nav.querySelector("ul").classList.toggle("open");
         });
+        
+        // Dropdown toggle functionality
+        const dropdownToggle = nav.querySelector(".dropdown-toggle");
+        const dropdown = nav.querySelector(".dropdown");
+        if (dropdownToggle && dropdown) {
+            dropdownToggle.addEventListener("click", function (e) {
+                e.preventDefault();
+                dropdown.classList.toggle("dropdown-open");
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener("click", function (e) {
+                if (!dropdown.contains(e.target)) {
+                    dropdown.classList.remove("dropdown-open");
+                }
+            });
+        }
     }
 
     // Footer

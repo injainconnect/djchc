@@ -65,7 +65,9 @@ Edit the corresponding `.html` file directly, commit, and push (site redeploys v
 
 1. Copy an existing page (e.g. `about.html`) as your starting point — every page uses the same skeleton.
 2. Update the `<title>`, banner, and section content.
-3. **Add the page to the nav** — edit the `links` array in `js/common.js`.
+3. **Add the page to the nav** — edit the appropriate array in `js/common.js`:
+   - For main navigation: add to the `links` array
+   - For "Important Initiatives" dropdown: add to the `initiatives` array
 4. Reuse existing style classes (`.card`, `.highlight`, `.contact-grid`, `.book-grid`) rather than adding new ones.
 
 ## Deployment
