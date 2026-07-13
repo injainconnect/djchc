@@ -10,8 +10,18 @@ document.addEventListener("DOMContentLoaded", function () {
             { href: "news.html", icon: "fa-newspaper", label: "News" },
             { href: "events.html", icon: "fa-calendar-alt", label: "Events" },
             { href: "library.html", icon: "fa-book", label: "Library" },
-            { href: "chaturmas.html", icon: "fa-calendar-check", label: "Chaturmas 2026" },
             { href: "contact.html", icon: "fa-envelope", label: "Contact Us" }
+        ];
+        
+        const chaturmasCommittees = [
+            { href: "chaturmas.html", icon: "fa-calendar-check", label: "मुख्य पेज" },
+            { href: "chaturmas-supply.html", icon: "fa-truck", label: "आपूर्ति सेवा समिति" },
+            { href: "chaturmas-food.html", icon: "fa-utensils", label: "आहारचर्या समिति" },
+            { href: "chaturmas-finance.html", icon: "fa-coins", label: "कोष / वित्त समिति" },
+            { href: "chaturmas-cultural.html", icon: "fa-music", label: "सांस्कृतिक समिति" },
+            { href: "chaturmas-publicity.html", icon: "fa-bullhorn", label: "प्रचार-प्रसार समिति" },
+            { href: "chaturmas-health.html", icon: "fa-heartbeat", label: "स्वास्थ्य सेवा समिति" },
+            { href: "chaturmas-accommodation.html", icon: "fa-bed", label: "विहार समिति" }
         ];
         
         const initiatives = [
@@ -24,6 +34,12 @@ document.addEventListener("DOMContentLoaded", function () {
             <button class="menu-toggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
             <ul>
                 ${links.map(l => `<li><a href="${l.href}" class="${currentPage === l.href ? 'active' : ''}"><i class="fas ${l.icon}"></i> ${l.label}</a></li>`).join("")}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle"><i class="fas fa-calendar-check"></i> Chaturmas 2026 <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        ${chaturmasCommittees.map(c => `<li><a href="${c.href}" class="${currentPage === c.href ? 'active' : ''}"><i class="fas ${c.icon}"></i> ${c.label}</a></li>`).join("")}
+                    </ul>
+                </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle"><i class="fas fa-star"></i> Important Initiatives <i class="fas fa-chevron-down"></i></a>
                     <ul class="dropdown-menu">
@@ -38,21 +54,31 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         
         // Dropdown toggle functionality
-        const dropdownToggle = nav.querySelector(".dropdown-toggle");
-        const dropdown = nav.querySelector(".dropdown");
-        if (dropdownToggle && dropdown) {
-            dropdownToggle.addEventListener("click", function (e) {
+        const dropdownToggles = nav.querySelectorAll(".dropdown-toggle");
+        const dropdowns = nav.querySelectorAll(".dropdown");
+        
+        dropdownToggles.forEach((toggle, index) => {
+            toggle.addEventListener("click", function (e) {
                 e.preventDefault();
-                dropdown.classList.toggle("dropdown-open");
+                // Close all other dropdowns
+                dropdowns.forEach((dropdown, i) => {
+                    if (i !== index) {
+                        dropdown.classList.remove("dropdown-open");
+                    }
+                });
+                // Toggle current dropdown
+                dropdowns[index].classList.toggle("dropdown-open");
             });
-            
-            // Close dropdown when clicking outside
-            document.addEventListener("click", function (e) {
-                if (!dropdown.contains(e.target)) {
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener("click", function (e) {
+            if (!nav.contains(e.target)) {
+                dropdowns.forEach(dropdown => {
                     dropdown.classList.remove("dropdown-open");
-                }
-            });
-        }
+                });
+            }
+        });
     }
 
     // Footer

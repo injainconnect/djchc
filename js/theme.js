@@ -13,8 +13,8 @@
 
     var THEME_KEY = "djchc-theme";
     var LAYOUT_KEY = "djchc-layout";
-    var DEFAULT_THEME = "heritage";
-    var DEFAULT_LAYOUT = "classic";
+    var DEFAULT_THEME = "aurora";
+    var DEFAULT_LAYOUT = "focus";
 
     // Two swatch colours per theme: [banner/base, accent dot]
     var THEMES = [

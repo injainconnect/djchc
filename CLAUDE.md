@@ -69,6 +69,18 @@ If asked to make another page dynamic (events, chaturmas, library), replicate th
 - All other pages: content lives in the HTML directly — edit and redeploy.
 - Chaturmas page embeds a Google Form and a WhatsApp invite link — if those URLs need changing, they're in `chaturmas.html`.
 
+### Theme & Layout Switcher
+
+The site includes a comprehensive theming system implemented in `js/theme.js` with accompanying styles in `css/themes.css` and `css/layouts.css`. Key aspects:
+
+- **User customization**: Floating "Customise" button (palette icon) opens a settings panel with 6 themes and 4 layouts
+- **Persistence**: User choices are stored in localStorage and automatically reapplied on every page load
+- **Flash prevention**: Each HTML file includes an inline script in `<head>` that applies saved preferences immediately
+- **Defaults**: Hi-Tech Aurora theme + Focus layout (modern blue gradient with content on floating sheets)
+- **Accessibility**: All themes maintain proper contrast ratios and support screen readers
+
+The theme system uses CSS custom properties and data attributes (`data-theme` and `data-layout` on `<html>`). When modifying existing styles, be aware that colors are now themeable via CSS variables.
+
 ### Cross-page duplication to watch
 
 `contact.html` duplicates the "Who We Are / Our Values / What We Do" sections from `about.html`. If asked to update DJCHC's mission/values wording, update both files.

@@ -24,19 +24,47 @@ Open http://localhost:8000.
 
 Alternatives: `npx serve .` (Node), or the VS Code **Live Server** extension.
 
+## Theme & Layout System
+
+The site includes a comprehensive theme and layout switcher that allows users to customize their viewing experience. Users can access the customization panel via the floating "Customise" button (palette icon) in the bottom-right corner.
+
+### Available Themes
+- **Hi-Tech Aurora** (default) - Modern blue gradient theme
+- Heritage Gold - Traditional gold theme
+- Lotus Dawn - Warm sunrise theme  
+- Midnight Sapphire - Dark blue theme
+- Emerald Serenity - Green nature theme
+- Royal Maroon - Elegant maroon theme
+
+### Available Layouts
+- **Focus** (default) - Content on floating sheets for better reading focus
+- Classic - Balanced, familiar reading width
+- Wide - Full-width immersive layout
+- Comfort - Larger text and generous spacing for accessibility
+
+### Technical Details
+- Preferences are stored in localStorage and persist across sessions
+- Each HTML file includes an inline script that applies saved preferences immediately to prevent theme flash
+- The theme switcher is implemented in `js/theme.js` with CSS in `css/themes.css` and `css/layouts.css`
+- All themes maintain accessibility standards and mobile responsiveness
+
 ## Repo layout
 
 ```
 ├── index.html, about.html, news.html, events.html,
 │   library.html, chaturmas.html, mahila-mandal.html,
 │   pathshala.html, contact.html   ← one file per page
-├── css/style.css                   ← all styling
+├── css/
+│   ├── style.css                  ← main styling
+│   ├── themes.css                 ← color themes for the theme switcher
+│   └── layouts.css                ← layout options for the theme switcher
 ├── js/
-│   ├── common.js                   ← injects the shared nav + footer on every page
-│   └── news.js                     ← fetches news from the Google Sheet and renders cards
+│   ├── common.js                  ← injects the shared nav + footer on every page
+│   ├── news.js                    ← fetches news from the Google Sheet and renders cards
+│   └── theme.js                   ← theme and layout switcher functionality
 ├── data/
-│   └── news.csv                    ← local fixture / reference schema for the news sheet
-├── CLAUDE.md                       ← guidance for AI coding assistants
+│   └── news.csv                   ← local fixture / reference schema for the news sheet
+├── CLAUDE.md                      ← guidance for AI coding assistants
 └── README.md
 ```
 
