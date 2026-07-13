@@ -10,7 +10,11 @@
 // - Body:      the news paragraph. Blank lines become paragraph breaks.
 // - Published: TRUE / FALSE. Only TRUE rows are shown.
 
-const NEWS_SHEET_CSV_URL = "REPLACE_WITH_YOUR_PUBLISHED_CSV_URL";
+// For local testing this points to data/news.csv in the repo.
+// Once the Google Sheet is published, replace this with the "Publish to web"
+// CSV URL — it will look like:
+//   https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?gid=0&single=true&output=csv
+const NEWS_SHEET_CSV_URL = "data/news.csv";
 
 document.addEventListener("DOMContentLoaded", function () {
     const container = document.getElementById("news-list");
