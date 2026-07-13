@@ -10,11 +10,11 @@
 // - Body:      the news paragraph. Blank lines become paragraph breaks.
 // - Published: TRUE / FALSE. Only TRUE rows are shown.
 
-// For local testing this points to data/news.csv in the repo.
-// Once the Google Sheet is published, replace this with the "Publish to web"
-// CSV URL — it will look like:
-//   https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?gid=0&single=true&output=csv
-const NEWS_SHEET_CSV_URL = "data/news.csv";
+// Google Sheet "DJCHC News", published to web as CSV (File → Share → Publish to web).
+// To edit news content, open the sheet, edit rows, then wait ~1-2 minutes for Google
+// to refresh the published CSV. To swap the source, change this URL.
+// A local fallback exists at data/news.csv (used only if you point this back to it).
+const NEWS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTKmm0xT09-nQsDxf23zx4JXJfSDwoyo22JA9N5f1MZJwUxmmWf0OryiUb5QZKgx8CxvmuIWSRRI6-l/pub?gid=1034983485&single=true&output=csv";
 
 document.addEventListener("DOMContentLoaded", function () {
     const container = document.getElementById("news-list");
