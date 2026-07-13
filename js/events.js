@@ -16,8 +16,12 @@
 // Google Sheet "DJCHC Events", published to web as CSV (File -> Share -> Publish to web).
 // To edit events, open the sheet, edit rows, then wait ~1-2 minutes for Google to
 // refresh the published CSV. To swap the source, change this URL.
-// A local fixture exists at data/events.csv (used for offline testing / column reference).
-const EVENTS_SHEET_CSV_URL = "REPLACE_WITH_PUBLISHED_EVENTS_CSV_URL";
+// If this fetch fails (offline, blocked, or URL not yet live), the loader falls back
+// to the local fixture at data/events.csv so the page still renders.
+const EVENTS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSQqLaYmG3tjwsU-d-acqDKLBovaEVxGZm0m5WvcIFfPVOeoSQ8w8997_P-g27QFxeGKCEe6Quglff6/pub?gid=1672694556&single=true&output=csv";
+
+// Local fallback used when the published sheet can't be fetched.
+const EVENTS_LOCAL_CSV_URL = "data/events.csv";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -25,17 +29,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const container = document.getElementById("events-list");
     if (!container) return;
 
-    // If the sheet is not configured yet, fall back to the local fixture so the
-    // page still renders beautifully during development / before publishing.
-    const source = (!EVENTS_SHEET_CSV_URL || EVENTS_SHEET_CSV_URL.startsWith("REPLACE_"))
-        ? "data/events.csv"
-        : EVENTS_SHEET_CSV_URL;
-
-    fetch(source, { cache: "no-store" })
-        .then(r => {
-            if (!r.ok) throw new Error("HTTP " + r.status);
-            return r.text();
-        })
+    // Try the published Google Sheet first, then fall back to the local CSV.
+    fetchFirst([EVENTS_SHEET_CSV_URL, EVENTS_LOCAL_CSV_URL])
         .then(csv => {
             const rows = parseCsv(csv);
             if (rows.length < 2) {
@@ -68,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     description: cell(r, idx.description),
                     category: cell(r, idx.category),
                     published: idx.published === -1 ? true : /^(true|yes|1|y)$/i.test(cell(r, idx.published)),
-                    ts: Date.parse(cell(r, idx.date))
+                    ts: parseEventDate(cell(r, idx.date))
                 }))
                 .filter(e => e.published && e.title);
 
@@ -84,6 +79,48 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Events fetch failed:", err);
         });
 });
+
+// Fetch the first URL that responds successfully, trying each in order.
+function fetchFirst(urls) {
+    let chain = Promise.reject(new Error("no sources"));
+    urls.forEach(url => {
+        if (!url) return;
+        chain = chain.catch(() =>
+            fetch(url, { cache: "no-store" }).then(r => {
+                if (!r.ok) throw new Error("HTTP " + r.status + " for " + url);
+                return r.text();
+            })
+        );
+    });
+    return chain;
+}
+
+// Parse a date cell into a timestamp (ms) or NaN.
+// Handles ISO (YYYY-MM-DD), day-first (DD-MM-YYYY or DD/MM/YYYY, as exported by
+// sheets with an Indian locale), and anything else the browser understands
+// (e.g. "August 2026"). Day-first is assumed for the DD?MM?YYYY shape.
+function parseEventDate(str) {
+    if (!str) return NaN;
+    const s = str.trim();
+
+    // ISO: 2026-08-20
+    let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if (m) return new Date(+m[1], +m[2] - 1, +m[3]).getTime();
+
+    // Day-first: 20-08-2026 or 20/08/2026 (also tolerates 2-digit year)
+    m = s.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{2,4})$/);
+    if (m) {
+        let day = +m[1], month = +m[2], year = +m[3];
+        if (year < 100) year += 2000;
+        // If the first number can't be a day but the second can, treat as month-first.
+        if (day > 12 && month <= 12) { /* day-first, as-is */ }
+        else if (month > 12 && day <= 12) { const t = day; day = month; month = t; }
+        return new Date(year, month - 1, day).getTime();
+    }
+
+    // Fallback: let the browser try ("August 2026", "Aug 20 2026", etc.)
+    return Date.parse(s);
+}
 
 function renderEvents(container, items) {
     // Midnight today, so an event happening later today still counts as upcoming.
