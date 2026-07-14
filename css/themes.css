@@ -1,3 +1,7 @@
+/* Fonts used by the "Sandalwood" theme (elegant serif display + clean body).
+   Loaded here so no page <head> needs editing; other themes ignore them. */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap');
+
 /* ==================================================================
    DJCHC — Theme & Layout system
    ------------------------------------------------------------------
@@ -151,6 +155,38 @@ html[data-theme="aurora"] {
     --banner-gradient: linear-gradient(120deg, #4338ca 0%, #6d28d9 40%, #06b6d4 100%);
     --banner-text: #ffffff;
 }
+
+/* ------------------------------------------------------------------
+   THEME 7 — Sandalwood  (warm ochre + cream + charcoal, serif display)
+   Inspired by a calm, editorial Ayurvedic aesthetic: earthy ochre accent
+   on a cream ground, near-black charcoal text, elegant serif headings.
+------------------------------------------------------------------ */
+html[data-theme="sandalwood"] {
+    --color-bg: #f6f1e7;
+    --color-text: #2e2a26;
+    --color-muted: #8a7f70;
+    --color-heading: #2e2a26;
+    --color-accent: #b9762f;
+    --color-accent-dark: #9a5f22;
+    --color-accent-contrast: #f9f4ea;
+    --color-nav-bg: #2e2a26;
+    --color-nav-link: #f3ece0;
+    --color-card-bg: #ffffff;
+    --color-card-border: #e6dcc8;
+    --color-highlight-bg: #f3e7d3;
+    --color-footer-bg: #2e2a26;
+    --color-footer-text: #d8cdbb;
+    --banner-gradient: linear-gradient(135deg, #b9762f 0%, #c98a3f 55%, #e0c088 130%);
+    --banner-text: #fbf6ec;
+    --body-font: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --heading-font: 'Cormorant Garamond', 'Georgia', serif;
+}
+/* Serif headings read best a touch larger & lighter */
+html[data-theme="sandalwood"] .banner h1 { font-weight: 600; letter-spacing: -0.5px; }
+html[data-theme="sandalwood"] section h2,
+html[data-theme="sandalwood"] .card h3 { font-weight: 600; }
+/* Editorial "eyebrow" feel: accent underline instead of full border */
+html[data-theme="sandalwood"] section h2 { border-bottom-width: 1px; }
 
 /* ==================================================================
    LAYOUTS

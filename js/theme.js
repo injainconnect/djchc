@@ -23,7 +23,8 @@
         { id: "midnight", name: "Midnight Sapphire", base: "linear-gradient(135deg,#1f2748,#2b1d52)", dot: "#f0c85a" },
         { id: "emerald",  name: "Emerald Serenity", base: "linear-gradient(135deg,#1e7a5a,#2ea179)", dot: "#f5fbf7" },
         { id: "maroon",   name: "Royal Maroon",   base: "linear-gradient(135deg,#8e2436,#c0392b)", dot: "#e0a53f" },
-        { id: "aurora",   name: "Hi-Tech Aurora", base: "linear-gradient(120deg,#4338ca,#06b6d4)", dot: "#ffffff" }
+        { id: "aurora",   name: "Hi-Tech Aurora", base: "linear-gradient(120deg,#4338ca,#06b6d4)", dot: "#ffffff" },
+        { id: "sandalwood", name: "Sandalwood",  base: "linear-gradient(135deg,#b9762f,#e0c088)", dot: "#2e2a26" }
     ];
 
     var LAYOUTS = [
