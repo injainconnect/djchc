@@ -20,7 +20,7 @@
 // to the local fixture at data/events.csv so the page still renders.
 // const EVENTS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSQqLaYmG3tjwsU-d-acqDKLBovaEVxGZm0m5WvcIFfPVOeoSQ8w8997_P-g27QFxeGKCEe6Quglff6/pub?gid=1672694556&single=true&output=csv";
 
-const EVENTS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEFDbwxcUW1afkQzY4zl2d85lvK9GSsSIAynsPbiSviDoxFiUg3MEuHVx888B04xGAvLnj4l0QeC9J/pub?output=csv";
+const EVENTS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT5NvbHZsxNRvBuqcWXS3hLTixlCj17ZU1llZxYM95TmRZWaJHwT7ig7jijjTC4Wd0GbM-70N1NAdEH/pub?output=csv";
 
 // Local fallback used when the published sheet can't be fetched.
 const EVENTS_LOCAL_CSV_URL = "data/events.csv";
