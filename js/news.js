@@ -14,7 +14,6 @@
 // To edit news content, open the sheet, edit rows, then wait ~1-2 minutes for Google
 // to refresh the published CSV. To swap the source, change this URL.
 // A local fallback exists at data/news.csv (used only if you point this back to it).
-// const NEWS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTKmm0xT09-nQsDxf23zx4JXJfSDwoyo22JA9N5f1MZJwUxmmWf0OryiUb5QZKgx8CxvmuIWSRRI6-l/pub?gid=1034983485&single=true&output=csv";
 
 const NEWS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEFDbwxcUW1afkQzY4zl2d85lvK9GSsSIAynsPbiSviDoxFiUg3MEuHVx888B04xGAvLnj4l0QeC9J/pub?output=csv";
 
