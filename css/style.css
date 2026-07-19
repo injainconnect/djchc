@@ -300,3 +300,27 @@ footer {
     .event-date-badge .edb-year { font-size: 0.9rem; }
     iframe { height: 250px; }
 }
+
+/* Library action buttons */
+.library-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.library-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 4px;
+    background: var(--color-accent);
+    color: var(--banner-text, #fff);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+.library-btn:hover {
+    background: var(--color-accent-dark);
+}
