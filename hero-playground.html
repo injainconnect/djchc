@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Banner Playground</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #1a1a2e;
+            color: #fff;
+            padding: 15px 20px;
+            z-index: 1000;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .controls label {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 0.75rem;
+            color: #ccc;
+        }
+        .controls select, .controls input[type="range"] {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: none;
+            font-size: 0.85rem;
+        }
+        .controls input[type="range"] { width: 120px; }
+        .controls .val { color: #daa520; font-weight: bold; font-size: 0.85rem; }
+        .controls button {
+            padding: 8px 16px;
+            background: #daa520;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .controls button:hover { background: #f0c040; }
+
+        .preview-area {
+            margin-top: 120px;
+            padding: 20px;
+        }
+        .preview-area h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .preview-area p.hint {
+            text-align: center;
+            color: #888;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Hero banner preview */
+        .hero-banner {
+            position: relative;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .hero-banner img {
+            display: block;
+        }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        .hero-overlay h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
+        .hero-overlay p {
+            font-size: 1.2rem;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+
+        .css-output {
+            margin: 30px auto;
+            max-width: 700px;
+            background: #1a1a2e;
+            color: #daa520;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 768px) {
+            .controls { gap: 10px; padding: 10px; }
+            .hero-overlay h1 { font-size: 1.4rem; }
+            .hero-overlay p { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <label>
+        Banner Width
+        <select id="ctl-width">
+            <option value="100%">100% (full)</option>
+            <option value="90%">90%</option>
+            <option value="80%">80%</option>
+            <option value="70%">70%</option>
+            <option value="60%">60%</option>
+        </select>
+    </label>
+
+    <label>
+        Max Height
+        <input type="range" id="ctl-maxh" min="200" max="700" value="450" step="25">
+        <span class="val" id="val-maxh">450px</span>
+    </label>
+
+    <label>
+        Object Fit
+        <select id="ctl-fit">
+            <option value="contain">contain (full image, may letterbox)</option>
+            <option value="cover">cover (fills box, may crop)</option>
+            <option value="fill">fill (stretches to fit)</option>
+            <option value="scale-down">scale-down (like contain, won't upscale)</option>
+        </select>
+    </label>
+
+    <label>
+        Object Position
+        <select id="ctl-pos">
+            <option value="center">center</option>
+            <option value="top">top</option>
+            <option value="bottom">bottom</option>
+            <option value="center top">center top</option>
+            <option value="center 30%">center 30%</option>
+        </select>
+    </label>
+
+    <label>
+        Overlay Darkness
+        <input type="range" id="ctl-overlay" min="0" max="70" value="40" step="5">
+        <span class="val" id="val-overlay">0.40</span>
+    </label>
+
+    <label>
+        Border Radius
+        <select id="ctl-radius">
+            <option value="0">0 (sharp)</option>
+            <option value="8px">8px</option>
+            <option value="16px">16px</option>
+            <option value="24px">24px</option>
+        </select>
+    </label>
+
+    <button id="btn-copy">Copy CSS</button>
+</div>
+
+<div class="preview-area">
+    <h2>Hero Banner Playground</h2>
+    <p class="hint">Adjust controls above. Resize browser to test mobile. When happy, click "Copy CSS".</p>
+
+    <div class="hero-banner" id="hero">
+        <img src="imgs/varshayog.jpeg" alt="Varshayog - DJCHC Hyderabad" id="hero-img">
+        <div class="hero-overlay" id="hero-overlay">
+            <h1>Digambar Jain Centre - Hi-Tech City & Nallagandla</h1>
+            <p>Jain Spiritual & Community Hub</p>
+        </div>
+    </div>
+
+    <div class="css-output" id="css-output"></div>
+</div>
+
+<script>
+    var hero = document.getElementById("hero");
+    var img = document.getElementById("hero-img");
+    var overlay = document.getElementById("hero-overlay");
+    var output = document.getElementById("css-output");
+
+    var ctlWidth = document.getElementById("ctl-width");
+    var ctlMaxH = document.getElementById("ctl-maxh");
+    var ctlFit = document.getElementById("ctl-fit");
+    var ctlPos = document.getElementById("ctl-pos");
+    var ctlOverlay = document.getElementById("ctl-overlay");
+    var ctlRadius = document.getElementById("ctl-radius");
+
+    function update() {
+        var w = ctlWidth.value;
+        var maxH = ctlMaxH.value + "px";
+        var fit = ctlFit.value;
+        var pos = ctlPos.value;
+        var ov = (ctlOverlay.value / 100).toFixed(2);
+        var radius = ctlRadius.value;
+
+        hero.style.width = w;
+        hero.style.maxHeight = maxH;
+        hero.style.borderRadius = radius;
+        hero.style.margin = "0 auto";
+
+        img.style.width = "100%";
+        img.style.height = maxH;
+        img.style.objectFit = fit;
+        img.style.objectPosition = pos;
+
+        overlay.style.background = "rgba(0, 0, 0, " + ov + ")";
+        overlay.style.borderRadius = radius;
+
+        document.getElementById("val-maxh").textContent = maxH;
+        document.getElementById("val-overlay").textContent = ov;
+
+        var css = "/* Hero Banner — paste into css/style.css */\n";
+        css += ".hero-banner {\n";
+        css += "    position: relative;\n";
+        css += "    width: " + w + ";\n";
+        css += "    max-height: " + maxH + ";\n";
+        css += "    margin: 0 auto;\n";
+        css += "    overflow: hidden;\n";
+        if (radius !== "0") css += "    border-radius: " + radius + ";\n";
+        css += "}\n";
+        css += ".hero-banner img {\n";
+        css += "    width: 100%;\n";
+        css += "    height: " + maxH + ";\n";
+        css += "    object-fit: " + fit + ";\n";
+        if (pos !== "center") css += "    object-position: " + pos + ";\n";
+        css += "    display: block;\n";
+        css += "}\n";
+        css += ".hero-overlay {\n";
+        css += "    position: absolute;\n";
+        css += "    inset: 0;\n";
+        css += "    display: flex;\n";
+        css += "    flex-direction: column;\n";
+        css += "    align-items: center;\n";
+        css += "    justify-content: center;\n";
+        css += "    background: rgba(0, 0, 0, " + ov + ");\n";
+        css += "    color: #fff;\n";
+        css += "    text-align: center;\n";
+        css += "    padding: 20px;\n";
+        css += "}";
+
+        output.textContent = css;
+    }
+
+    ctlWidth.addEventListener("change", update);
+    ctlMaxH.addEventListener("input", update);
+    ctlFit.addEventListener("change", update);
+    ctlPos.addEventListener("change", update);
+    ctlOverlay.addEventListener("input", update);
+    ctlRadius.addEventListener("change", update);
+
+    document.getElementById("btn-copy").addEventListener("click", function() {
+        navigator.clipboard.writeText(output.textContent).then(function() {
+            alert("CSS copied! Paste it to me and I'll apply it.");
+        });
+    });
+
+    update();
+</script>
+
+</body>
+</html>
