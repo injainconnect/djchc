@@ -122,7 +122,7 @@ nav .dropdown-menu li a { border-radius: 0; }
 /* Hero Banner — paste into css/style.css */
 .hero-banner {
     position: relative;
-    width: 60%;
+    width: 90%;
     max-height: 525px;
     margin: 0 auto;
     overflow: hidden;
