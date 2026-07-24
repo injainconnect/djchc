@@ -23,6 +23,11 @@ document.addEventListener("DOMContentLoaded", function () {
             { href: "chaturmas-accommodation.html", icon: "fa-bed", label: "विहार समिति" }
         ];
         
+        const kalashSthapana = [
+            { href: "kalash-main.html", icon: "fa-fire", label: "कलश स्थापना मुख्य" },
+            { href: "kalash-details.html", icon: "fa-info-circle", label: "Kalash Details" }
+        ];
+        
         const initiatives = [
             { href: "library.html", icon: "fa-book", label: "Library" },
             { href: "mahila-mandal.html", icon: "fa-female", label: "Mahila Mandal" },
@@ -39,6 +44,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     <a href="#" class="dropdown-toggle"><i class="fas fa-calendar-check"></i> Chaturmas 2026 <i class="fas fa-chevron-down"></i></a>
                     <ul class="dropdown-menu">
                         ${chaturmasCommittees.map(c => `<li><a href="${c.href}" class="${currentPage === c.href ? 'active' : ''}"><i class="fas ${c.icon}"></i> ${c.label}</a></li>`).join("")}
+                        <li class="dropdown-divider"></li>
+                        <li class="nested-dropdown">
+                            <a href="#" class="nested-toggle"><i class="fas fa-fire"></i> कलश स्थापना <i class="fas fa-chevron-right"></i></a>
+                            <ul class="nested-dropdown-menu">
+                                ${kalashSthapana.map(k => `<li><a href="${k.href}" class="${currentPage === k.href ? 'active' : ''}"><i class="fas ${k.icon}"></i> ${k.label}</a></li>`).join("")}
+                            </ul>
+                        </li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -72,11 +84,33 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
         
+        // Nested dropdown functionality for Kalash Sthapana
+        const nestedToggles = nav.querySelectorAll(".nested-toggle");
+        const nestedDropdowns = nav.querySelectorAll(".nested-dropdown");
+        
+        nestedToggles.forEach((toggle, index) => {
+            toggle.addEventListener("click", function (e) {
+                e.preventDefault();
+                e.stopPropagation(); // Prevent parent dropdown from closing
+                // Close all other nested dropdowns
+                nestedDropdowns.forEach((dropdown, i) => {
+                    if (i !== index) {
+                        dropdown.classList.remove("nested-open");
+                    }
+                });
+                // Toggle current nested dropdown
+                nestedDropdowns[index].classList.toggle("nested-open");
+            });
+        });
+        
         // Close dropdown when clicking outside
         document.addEventListener("click", function (e) {
             if (!nav.contains(e.target)) {
                 dropdowns.forEach(dropdown => {
                     dropdown.classList.remove("dropdown-open");
+                });
+                nestedDropdowns.forEach(dropdown => {
+                    dropdown.classList.remove("nested-open");
                 });
             }
         });

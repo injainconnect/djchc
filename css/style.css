@@ -108,6 +108,44 @@ nav .dropdown-menu {
 nav .dropdown.dropdown-open .dropdown-menu { display: flex; }
 nav .dropdown-menu li a { border-radius: 0; }
 
+/* Dropdown Divider */
+nav .dropdown-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin: 8px 0;
+}
+
+/* Nested Dropdown (Kalash Sthapana) */
+nav .nested-dropdown { position: relative; }
+nav .nested-toggle { 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+nav .nested-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    min-width: 200px;
+    background: var(--color-nav-bg);
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    padding: 6px 0;
+    flex-direction: column;
+    gap: 0;
+    z-index: 1001;
+}
+nav .nested-dropdown.nested-open .nested-dropdown-menu { display: flex; }
+nav .nested-dropdown-menu li a { border-radius: 0; }
+
+/* Hover effects for nested items */
+nav .nested-toggle:hover .fa-chevron-right {
+    transform: translateX(2px);
+    transition: transform 0.2s ease;
+}
+
 /* Header Banner */
 .banner {
     background: var(--banner-gradient);
