@@ -220,6 +220,7 @@ section ul { padding-left: 20px; }
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+    align-items: center;
 }
 .contact-grid .card i { color: var(--color-accent); margin-right: 8px; }
 
