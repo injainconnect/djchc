@@ -35,6 +35,14 @@ const JAAPS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRd
 // Trolls typing 999999999 into the form get quietly dropped.
 const MAX_COUNT_PER_ROW = 100000;
 const RECENT_LIMIT = 10;
+const LEADERBOARD_LIMIT = 10;
+
+// mobile_last6 must look EXACTLY like "****<six digits>". Anything
+// longer (a full 10-digit mobile leaking through), shorter, or
+// containing non-digit tail (garbage) is treated as "no mobile".
+// This is the last-mile PII defense in case the sheet formula is
+// mis-configured. Never trust that the pipeline redacted correctly.
+const MOBILE_LAST6_RE = /^\*+\d{6}$/;
 
 document.addEventListener("DOMContentLoaded", function () {
     const root = document.getElementById("jaap-root");
@@ -66,7 +74,7 @@ function renderList(root, jaaps) {
 
     const intro = document.createElement("p");
     intro.className = "events-intro";
-    intro.textContent = "Join a group jaap. Every mala counts toward the shared target.";
+    intro.textContent = "Chant together. Every mantra you chant counts toward the shared target — submit any number.";
     root.appendChild(intro);
 
     if (visible.length === 0) {
@@ -234,13 +242,25 @@ function paintDetail(root, j, total, subs) {
     meta.appendChild(statusPill);
     root.appendChild(meta);
 
-    // Behind-pace nudge on active jaaps only
-    if (j.status === "active" && p.behindPercent >= 10) {
+    // Behind-pace nudge on active jaaps only, and only once we're past
+    // the grace period. Pace math is meaningless in the first few days.
+    if (j.status === "active" && !p.inGracePeriod && p.behindPercent >= NUDGE_THRESHOLD_PERCENT) {
         const nudge = document.createElement("div");
         nudge.className = "jaap-banner-behind";
         nudge.textContent =
-            "The group is " + p.behindPercent + "% behind pace. Every mala today helps.";
+            "The group is " + p.behindPercent + "% behind the pace needed to reach the target. Every mantra today helps.";
         root.appendChild(nudge);
+    }
+
+    // Clarify the counting model before showing the CTA on active jaaps —
+    // some users worry they should divide by 108 or only submit full malas.
+    // Every mantra counts, at any granularity.
+    if (j.status === "active") {
+        const hint = document.createElement("p");
+        hint.className = "jaap-counting-hint";
+        hint.textContent =
+            "Every mantra you chant counts. You do not need to complete a full mala — submit any number, as often as you like.";
+        root.appendChild(hint);
     }
 
     // Contribute button — only on active jaaps
@@ -277,6 +297,47 @@ function paintDetail(root, j, total, subs) {
         root.appendChild(row);
     }
 
+    // Top contributors leaderboard
+    const contributors = aggregateContributors(subs, LEADERBOARD_LIMIT);
+    if (contributors.length > 0) {
+        const wrap = document.createElement("div");
+        wrap.className = "jaap-leaderboard";
+        const h = document.createElement("h3");
+        h.innerHTML = '<i class="fas fa-trophy"></i> Top ' + contributors.length + ' Contributors';
+        wrap.appendChild(h);
+
+        const ul = document.createElement("ol");
+        ul.className = "jaap-leaderboard-list";
+        contributors.forEach(function (c, i) {
+            const li = document.createElement("li");
+            li.className = "lb-row rank-" + (i + 1 <= 3 ? i + 1 : "n");
+
+            const rank = document.createElement("span");
+            rank.className = "lb-rank";
+            rank.textContent = (i + 1) + ".";
+
+            const name = document.createElement("span");
+            name.className = "lb-name";
+            name.textContent = firstName(c.name);
+
+            const mob = document.createElement("span");
+            mob.className = "lb-mobile";
+            mob.textContent = c.mobileLast6;
+
+            const total = document.createElement("span");
+            total.className = "lb-count";
+            total.textContent = formatInt(c.total);
+
+            li.appendChild(rank);
+            li.appendChild(name);
+            li.appendChild(mob);
+            li.appendChild(total);
+            ul.appendChild(li);
+        });
+        wrap.appendChild(ul);
+        root.appendChild(wrap);
+    }
+
     // Recent submissions
     if (subs.length > 0) {
         const wrap = document.createElement("div");
@@ -292,7 +353,7 @@ function paintDetail(root, j, total, subs) {
             const li = document.createElement("li");
             const name = document.createElement("span");
             name.className = "r-name";
-            name.textContent = s.name || "Anonymous";
+            name.textContent = firstName(s.name);
             const count = document.createElement("span");
             count.className = "r-count";
             count.textContent = "+" + formatInt(s.count);
@@ -340,18 +401,62 @@ function parseJaaps(rows) {
 function parseSubmissions(rows) {
     if (rows.length < 2) return [];
     // Google Forms creates a "Timestamp" column, capitalized.
-    const idx = headerIndex(rows[0], ["Timestamp", "Name", "Count", "Note"]);
+    // mobile_last6 is optional — legacy jaaps without the column still work.
+    const idx = headerIndex(rows[0], ["Timestamp", "Name", "mobile_last6", "Count", "Note"]);
     return rows.slice(1)
         .map(function (r) {
             const raw = intOrZero(cell(r, idx.Count));
+            const rawMobile = cell(r, idx.mobile_last6);
             return {
                 timestampMs: parseTimestamp(cell(r, idx.Timestamp)),
                 name: cell(r, idx.Name),
+                mobileLast6: MOBILE_LAST6_RE.test(rawMobile) ? rawMobile : "",
                 count: raw > 0 && raw <= MAX_COUNT_PER_ROW ? raw : 0,
                 note: cell(r, idx.Note)
             };
         })
         .filter(function (s) { return s.count > 0; });
+}
+
+// Group submissions by mobile_last6, sum counts, keep the most recent
+// name seen for that mobile. Sort descending by total; tie-break by
+// earliest submission timestamp (whoever got there first wins ties).
+// Returns top N.
+//
+// Rows without a valid mobile are dropped from the leaderboard but
+// stay counted in the caller's group total.
+function aggregateContributors(subs, limit) {
+    const groups = new Map();
+    for (const s of subs) {
+        if (!s.mobileLast6) continue;
+        let g = groups.get(s.mobileLast6);
+        if (!g) {
+            g = { mobileLast6: s.mobileLast6, name: s.name, total: 0, firstMs: s.timestampMs, lastMs: s.timestampMs, entries: 0 };
+            groups.set(s.mobileLast6, g);
+        }
+        g.total += s.count;
+        g.entries += 1;
+        if (isFinite(s.timestampMs)) {
+            if (!isFinite(g.firstMs) || s.timestampMs < g.firstMs) g.firstMs = s.timestampMs;
+            if (!isFinite(g.lastMs)  || s.timestampMs > g.lastMs)  { g.lastMs = s.timestampMs; g.name = s.name || g.name; }
+        }
+    }
+    const list = Array.from(groups.values());
+    list.sort(function (a, b) {
+        if (b.total !== a.total) return b.total - a.total;
+        // Tie-break: earliest firstMs first. NaN sorts last.
+        const af = isFinite(a.firstMs) ? a.firstMs : Infinity;
+        const bf = isFinite(b.firstMs) ? b.firstMs : Infinity;
+        return af - bf;
+    });
+    return list.slice(0, limit);
+}
+
+// "Vikash Kumar Jain" → "Vikash". Preserves single-word names as-is.
+function firstName(full) {
+    if (!full) return "Anonymous";
+    const i = full.indexOf(" ");
+    return i === -1 ? full : full.slice(0, i);
 }
 
 function headerIndex(headerRow, wanted) {
@@ -365,6 +470,16 @@ function cell(row, i) { return i === -1 ? "" : (row[i] || "").trim(); }
 
 // ---------- Progress ---------- //
 
+// Pace math is inherently noisy in the first few days of a jaap window —
+// a group that's on track to succeed will still look "97% behind pace"
+// on day 2. We suppress that signal during a grace period (larger of 3
+// days or 20% of the window) and only start nudging once the pace
+// number is meaningful.
+const GRACE_MIN_DAYS = 3;
+const GRACE_FRACTION = 0.20;
+const NUDGE_THRESHOLD_PERCENT = 20;   // banner fires only if ≥20% behind after grace
+const MS_PER_DAY = 24 * 3600 * 1000;
+
 function computeProgress(j, total) {
     const target = j.target_count;
     const now = Date.now();
@@ -375,9 +490,11 @@ function computeProgress(j, total) {
     const percent = target > 0 ? Math.min(100, Math.floor((total / target) * 100)) : 0;
 
     let daysLeft = 0;
-    let elapsedFrac = 0;
+    let daysElapsed = 0;
+    let totalDays = 0;
     let expectedNow = 0;
     let behindPercent = 0;
+    let inGracePeriod = false;
     let bandClass = "is-onpace";
     let label = "";
 
@@ -390,33 +507,55 @@ function computeProgress(j, total) {
     } else if (!spanMs || isNaN(spanMs)) {
         label = percent + "%";
     } else {
-        daysLeft = Math.max(0, Math.ceil((end - now) / (24 * 3600 * 1000)));
-        elapsedFrac = Math.min(1, Math.max(0, (now - start) / spanMs));
+        daysLeft = Math.max(0, Math.ceil((end - now) / MS_PER_DAY));
+        totalDays = Math.max(1, Math.ceil(spanMs / MS_PER_DAY));
+        daysElapsed = Math.max(0, Math.min(totalDays, totalDays - daysLeft));
+        const elapsedFrac = Math.min(1, Math.max(0, (now - start) / spanMs));
         expectedNow = target * elapsedFrac;
+
+        // Grace period: whichever is longer — GRACE_MIN_DAYS or GRACE_FRACTION of the window.
+        const graceDays = Math.max(GRACE_MIN_DAYS, Math.ceil(totalDays * GRACE_FRACTION));
+        inGracePeriod = daysElapsed <= graceDays;
+
         if (total >= target) {
             bandClass = "is-success";
             label = "Target reached · " + daysLeft + " day" + plural(daysLeft) + " to spare";
         } else if (expectedNow <= 0) {
             bandClass = "is-onpace";
             label = daysLeft + " day" + plural(daysLeft) + " left";
+        } else if (inGracePeriod) {
+            // Early days — signal isn't meaningful yet. Keep it factual and calm.
+            bandClass = "is-onpace";
+            label = "Day " + daysElapsed + " of " + totalDays + " · getting started";
         } else {
             const paceRatio = total / expectedNow;   // 1.0 = on pace
+            const expectedRounded = Math.round(expectedNow);
             if (paceRatio >= 1.05) {
                 bandClass = "is-ahead";
-                const ahead = Math.round((paceRatio - 1) * 100);
-                label = daysLeft + " day" + plural(daysLeft) + " left · " + ahead + "% ahead of pace";
+                label = daysLeft + " day" + plural(daysLeft) + " left · ahead of pace (" +
+                        formatInt(total) + " of " + formatInt(expectedRounded) + " expected today)";
             } else if (paceRatio >= 0.95) {
                 bandClass = "is-onpace";
                 label = daysLeft + " day" + plural(daysLeft) + " left · on pace";
             } else {
                 bandClass = "is-behind";
                 behindPercent = Math.round((1 - paceRatio) * 100);
-                label = daysLeft + " day" + plural(daysLeft) + " left · " + behindPercent + "% behind pace";
+                label = daysLeft + " day" + plural(daysLeft) + " left · " +
+                        formatInt(total) + " of " + formatInt(expectedRounded) + " expected today";
             }
         }
     }
 
-    return { percent: percent, bandClass: bandClass, label: label, daysLeft: daysLeft, behindPercent: behindPercent };
+    return {
+        percent: percent,
+        bandClass: bandClass,
+        label: label,
+        daysLeft: daysLeft,
+        daysElapsed: daysElapsed,
+        totalDays: totalDays,
+        behindPercent: behindPercent,
+        inGracePeriod: inGracePeriod
+    };
 }
 
 function buildProgressBar(p) {
