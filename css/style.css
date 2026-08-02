@@ -371,6 +371,184 @@ footer {
     iframe { height: 250px; }
 }
 
+/* ---------- Jaap Counter ---------- */
+
+.jaap-card {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-card-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 22px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.jaap-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,0.12); }
+
+.jaap-mantra {
+    font-size: 2rem;
+    line-height: 1.3;
+    color: var(--color-heading);
+    margin-bottom: 4px;
+    /* Devanagari looks best in a font that has real support; fall back to serif. */
+    font-family: 'Noto Sans Devanagari', 'Mangal', 'Sanskrit Text', Georgia, serif;
+}
+.jaap-mantra-detail {
+    font-size: 3rem;
+    text-align: center;
+    padding: 12px 0 4px;
+}
+.jaap-translit {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    font-style: italic;
+    margin-bottom: 12px;
+}
+.jaap-translit-detail {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.jaap-desc { margin-bottom: 12px; }
+
+.jaap-progress-num {
+    font-size: 2.4rem;
+    font-weight: bold;
+    color: var(--color-accent-dark);
+    text-align: center;
+    line-height: 1.15;
+}
+.jaap-progress-num .of { color: var(--color-muted); font-weight: normal; font-size: 1.4rem; }
+.jaap-progress-label {
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.jaap-bar {
+    height: 14px;
+    background: rgba(0,0,0,0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 6px 0 12px;
+}
+.jaap-bar-fill {
+    height: 100%;
+    background: var(--banner-gradient);
+    transition: width 0.35s ease;
+}
+.jaap-bar-fill.is-behind  { background: linear-gradient(135deg, #b8860b, #daa520); }
+.jaap-bar-fill.is-onpace  { background: linear-gradient(135deg, #1e8449, #58d68d); }
+.jaap-bar-fill.is-ahead   { background: linear-gradient(135deg, #2471a3, #5dade2); }
+.jaap-bar-fill.is-success { background: linear-gradient(135deg, #d4ac0d, #f1c40f); }
+.jaap-bar-fill.is-missed  { background: linear-gradient(135deg, #7f8c8d, #bdc3c7); }
+
+.jaap-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    margin-bottom: 14px;
+}
+.jaap-meta-item i { color: var(--color-accent); margin-right: 5px; }
+
+.jaap-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--color-highlight-bg);
+    color: var(--color-accent-dark);
+    border: 1px solid #e6d9a8;
+    vertical-align: middle;
+    margin-left: 6px;
+}
+.jaap-status-pill.status-active    { background: #e8f3fc; color: #2471a3; border-color: #c3ddf0; }
+.jaap-status-pill.status-completed { background: #e9f7ef; color: #1e8449; border-color: #c2e6d1; }
+.jaap-status-pill.status-missed    { background: #f4f6f6; color: #7f8c8d; border-color: #d5dbdb; }
+.jaap-status-pill.status-archived  { background: #f3ecfb; color: #7d3c98; border-color: #dccbee; }
+
+.jaap-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 8px;
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+.jaap-cta:hover { background: var(--color-accent-dark); color: #fff; }
+.jaap-cta:active { transform: translateY(1px); }
+.jaap-cta.is-secondary {
+    background: transparent;
+    color: var(--color-accent-dark);
+    border: 1px solid var(--color-accent);
+}
+.jaap-cta.is-secondary:hover { background: var(--color-highlight-bg); color: var(--color-accent-dark); }
+
+.jaap-cta-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 8px 0 20px;
+}
+
+.jaap-banner-success,
+.jaap-banner-missed,
+.jaap-banner-behind {
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    text-align: center;
+    font-size: 1rem;
+}
+.jaap-banner-success { background: #e9f7ef; color: #1e8449; border: 1px solid #c2e6d1; }
+.jaap-banner-missed  { background: #f4f6f6; color: #7f8c8d; border: 1px solid #d5dbdb; }
+.jaap-banner-behind  { background: #fff8e1; color: #b8860b; border: 1px solid #e6d9a8; }
+
+.jaap-recent {
+    margin-top: 24px;
+}
+.jaap-recent h3 {
+    color: var(--color-heading);
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+.jaap-recent-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.jaap-recent-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-card-border);
+    font-size: 0.95rem;
+}
+.jaap-recent-list li:last-child { border-bottom: none; }
+.jaap-recent-list .r-name { color: var(--color-text); }
+.jaap-recent-list .r-count { color: var(--color-accent-dark); font-weight: bold; margin: 0 12px; }
+.jaap-recent-list .r-when { color: var(--color-muted); font-size: 0.85rem; }
+
+@media (max-width: 768px) {
+    .jaap-mantra { font-size: 1.6rem; }
+    .jaap-mantra-detail { font-size: 2.2rem; }
+    .jaap-progress-num { font-size: 1.9rem; }
+    .jaap-progress-num .of { font-size: 1.1rem; }
+    .jaap-recent-list li { flex-wrap: wrap; }
+}
+
 /* Library action buttons */
 .library-actions {
     margin-top: 12px;

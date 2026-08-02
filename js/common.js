@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ];
         
         const initiatives = [
+            { href: "jaap.html", icon: "fa-om", label: "Group Jaap" },
             { href: "library.html", icon: "fa-book", label: "Library" },
             { href: "mahila-mandal.html", icon: "fa-female", label: "Mahila Mandal" },
             { href: "pathshala.html", icon: "fa-chalkboard-teacher", label: "Pathshala" },

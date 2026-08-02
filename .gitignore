@@ -1,0 +1,8 @@
+.DS_Store
+
+# Local jaap fixtures — used for dev only, not source of truth.
+# Live data lives in the published Google Sheet URLs configured
+# at the top of js/jaap.js. Never commit these; a stale fixture
+# would confuse future contributors about where jaap data lives.
+data/jaaps.csv
+data/jaap-*.csv
