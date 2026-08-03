@@ -199,7 +199,7 @@ function paintDetail(root, j, total, subs) {
     if (j.status === "completed") {
         const banner = document.createElement("div");
         banner.className = "jaap-banner-success";
-        banner.textContent = "🌸 Target reached. Thank you to every participant.";
+        banner.textContent = "🌸 Target reached. Thank you to every punyarjak.";
         root.appendChild(banner);
     } else if (j.status === "missed") {
         const banner = document.createElement("div");
