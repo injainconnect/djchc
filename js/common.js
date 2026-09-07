@@ -12,6 +12,10 @@ document.addEventListener("DOMContentLoaded", function () {
             { href: "donation.html", icon: "fa-hand-holding-heart", label: "Donation" }
         ];
         
+        const paryushanItems = [
+            { href: "bhojanshala.html", icon: "fa-utensils", label: "भोजनशाला - Bhojanshala" }
+        ];
+        
         const chaturmasCommittees = [
             { href: "chaturmas.html", icon: "fa-calendar-check", label: "मुख्य पेज" },
             { href: "chaturmas-supply.html", icon: "fa-truck", label: "Procurement समिति" },
@@ -40,7 +44,16 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="logo">🙏 Digambar Jain Temples - Hyderabad</div>
             <button class="menu-toggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
             <ul>
-                ${links.map(l => `<li><a href="${l.href}" class="${currentPage === l.href ? 'active' : ''}"><i class="fas ${l.icon}"></i> ${l.label}</a></li>`).join("")}
+                <li><a href="index.html" class="${currentPage === 'index.html' ? 'active' : ''}"><i class="fas fa-home"></i> Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle"><i class="fas fa-pray"></i> Paryushan <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        ${paryushanItems.map(p => `<li><a href="${p.href}" class="${currentPage === p.href ? 'active' : ''}"><i class="fas ${p.icon}"></i> ${p.label}</a></li>`).join("")}
+                    </ul>
+                </li>
+                <li><a href="news.html" class="${currentPage === 'news.html' ? 'active' : ''}"><i class="fas fa-newspaper"></i> News</a></li>
+                <li><a href="events.html" class="${currentPage === 'events.html' ? 'active' : ''}"><i class="fas fa-calendar-alt"></i> Events</a></li>
+                <li><a href="donation.html" class="${currentPage === 'donation.html' ? 'active' : ''}"><i class="fas fa-hand-holding-heart"></i> Donation</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle"><i class="fas fa-calendar-check"></i> Chaturmas 2026 <i class="fas fa-chevron-down"></i></a>
                     <ul class="dropdown-menu">
